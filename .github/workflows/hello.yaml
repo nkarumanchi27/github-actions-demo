@@ -45,5 +45,5 @@ jobs:
           echo "permission=$PERMISSION" >> $GITHUB_ENV
 
       - name: check region and permission
-        if: ${{ github.event.inputs.region == 'us-east1' && ${{ env.permission == 'admin'}}}}
+        if: ${{ github.event.inputs.region == 'us-east1' && env.permission == 'admin' }}
         run: echo "Hello ${{ github.event.inputs.name }} from ${{ github.event.inputs.department }} in ${{ github.event.inputs.region }}"
