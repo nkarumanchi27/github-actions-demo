@@ -27,7 +27,7 @@ jobs:
         id: fetch_role
         run: |
           user_role=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOEKN }}" \
-           "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission") \
+           "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission" \
            | jq -r '.permission')
           echo "User_role=$user_role"
 
