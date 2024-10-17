@@ -1,7 +1,20 @@
 name: Hello World workflow
 
-on: [push]
-
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Your name'
+        requird: true
+        default: ''
+      department:
+        description: 'Your department'
+        required: true
+        default: ''
+      region:
+        description: 'Your region'
+        required: true
+        default: 'us-east1'
 jobs:
   hellow-world-job:
     runs-on: ubuntu-latest
@@ -10,5 +23,6 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: Print Hello
-        run: echo "Hello World"
+      - name: check region
+        if: ${{ github.event.inputs.region == 'us-east1' }}
+        run: echo "Hello ${{ github.event.inputs.name }} from ${{ github.event.inputs.department }} in ${{ github.event.inputs.region }}"
