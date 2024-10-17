@@ -30,7 +30,7 @@ jobs:
             sudo apt-get update && sudo apt-get install -y jq
           else
             echo "jq is already installed"
-
+          fi
       - name: Fetch user role
         id: fetch_role
         run: |
