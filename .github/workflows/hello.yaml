@@ -22,15 +22,26 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
+      
+      - name: Ensure jq is installed
+        run: |
+          if ! command -v jq &> /dev/null; then
+            echo " jq is not found installing it.."
+            sudo apt-get update && sudo apt-get install -y jq
+          else
+            echo "jq is already installed"
 
       - name: Fetch user role
         id: fetch_role
         run: |
           echo "who is running: ${{ github.actor }}"
-          user_role=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOEKN }}" \
-           "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission" \
-           | jq -r '.permission')
+          user_role=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOEKN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")
+          
           echo "User_role=$user_role"
+          echo $user_role > GITHUB_ENV
+
+          PERMISSION=$(echo $user_role | jq -r .permission)
+          echo "Permission: $PERMISSION"
 
       - name: check region
         if: ${{ github.event.inputs.region == 'us-east1' }}
